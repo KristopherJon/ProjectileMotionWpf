@@ -38,6 +38,9 @@
         <TextBlock x:Name="finalTimeText" HorizontalAlignment="Left" 
                    Margin="71,326,0,0" TextWrapping="Wrap" 
                    Text="final time" VerticalAlignment="Top"/>
+        <TextBlock x:Name="gravityText" HorizontalAlignment="Left" 
+                   Margin="418,10,0,0" TextWrapping="Wrap" 
+                   Text="gravity" VerticalAlignment="Top"/>
 
         <TextBox x:Name="velocityXAtIterationBox" HorizontalAlignment="Left" 
                  Height="24" Margin="125,160,0,0" TextWrapping="Wrap" 
@@ -55,6 +58,8 @@
                  Height="24" Margin="125,326,0,0" TextWrapping="Wrap" 
                  Text="" VerticalAlignment="Top" Width="80"/>
 
+        
+        
         <wpfTool:DecimalUpDown x:Name="InitialVelocityVectorValue"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
                                        Margin="10,31,0,0" ClipValueToMinMax="True"
@@ -73,11 +78,22 @@
                                        Margin="125,108,0,0" ClipValueToMinMax="True"
                                        Value="0"
                                        Increment="1"
-                                       Minimum="0"  Maximum="99" ValueChanged="iterationBox_ValueChanged"/>
+                                       Minimum="0"  Maximum="99" ValueChanged="IterationBox_ValueChanged"/>
+        <wpfTool:DecimalUpDown x:Name="GravityBox"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                                       Margin="418,31,0,0" ClipValueToMinMax="True"
+                                       Value="9.80665"
+                                       Increment="0.1" 
+                                       Minimum=".1"
+                                       Maximum="99"/>
 
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="318" Margin="250,0,0,50"  Width="530"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" 
+                VerticalAlignment="Bottom" Height="318" Margin="250,0,0,50"  Width="530"/>
 
-        <Ellipse x:Name="thrownObject" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Margin="243,0,0,43" Stroke="Black" StrokeThickness="1" Width="14" Height="14" RenderTransformOrigin="1.429,-0.179" />
+        <Ellipse x:Name="ellipse" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                 Margin="243,0,0,43" Stroke="Black" 
+                 StrokeThickness="1" Width="14" Height="14" 
+                 RenderTransformOrigin="1.429,-0.179" />
 
 
 

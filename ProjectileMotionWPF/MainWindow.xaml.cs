@@ -23,13 +23,15 @@ namespace ProjectileMotionWPF
     {
         private Position chartStartingPoint = new Position(250, 800 - 100);
 
-        private const float G = 9.80665f;
+        private float G;
         private float initialVelocityVectorValue;
         private float initialVelocityVectorAngle;
 
         private float velocityX;
         private float initialVelocityY;
         private float finalTime;
+        private float maxDistance;
+        private float maxHeight;
 
         private int CurrentIteration;
         private SpaceTimePoint[] spaceTimePoints;
@@ -42,8 +44,6 @@ namespace ProjectileMotionWPF
         public MainWindow()
         {
             InitializeComponent();
-            var theObject = thrownObject;
-            Canvas.SetLeft(theObject, 20);
         }
 
         private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
@@ -51,12 +51,38 @@ namespace ProjectileMotionWPF
             ReadInitialValues();
             CalculateTimeTotal();
             PopulateSpaceTimePointsTable();
-            
+            maxDistance = spaceTimePoints[spaceTimePoints.Length - 1].Position.X;
+            maxHeight = spaceTimePoints[spaceTimePoints.Length / 2].Position.Y;
             finalTimeBox.Text = finalTime.ToString();
 
             PopulateResultFields(CurrentIteration);
         }
 
+        private void ReadInitialValues()
+        {
+            initialVelocityVectorAngle = (float)InitialVelocityVectorAngle.Value;
+            initialVelocityVectorValue = (float)InitialVelocityVectorValue.Value;
+            velocityX = initialVelocityVectorValue * MathHelper.CosValueOfDegreeAngle(initialVelocityVectorAngle); // x velocity is a constant for we ommit aeordynamic resistance
+            initialVelocityY = initialVelocityVectorValue * MathHelper.SinValueOfDegreeAngle(initialVelocityVectorAngle); // is not constant for vertical velocity is affected by gavity
+            CurrentIteration = (int)iterationBox.Value;
+            //G = GravityBox.Value;
+            spaceTimePoints = new SpaceTimePoint[100];
+        }
+        private void CalculateTimeTotal()
+        {
+            finalTime = (2.0f * initialVelocityVectorValue) * MathHelper.SinValueOfDegreeAngle(initialVelocityVectorAngle) / G;
+        }
+        private void PopulateSpaceTimePointsTable()
+        {
+            for (int i = 0; i < spaceTimePoints.Length; i++)
+            {
+                spaceTimePoints[i] = CreateSpaceTimePointAtIteration(i);
+            }
+        }
+        private void UpdateEllipseElement(Position newPosition)
+        {
+            ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maxDistance, maxHeight);
+        }
         private SpaceTimePoint CreateSpaceTimePointAtIteration(int i)
         {
             var currentTime = GetTimeAtIteration(i);
@@ -82,45 +108,19 @@ namespace ProjectileMotionWPF
         {
             return finalTime * (i / 100f);
         }
-        private void ReadInitialValues()
+        private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            initialVelocityVectorAngle = (float)InitialVelocityVectorAngle.Value;
-            initialVelocityVectorValue = (float)InitialVelocityVectorValue.Value;
-            velocityX = initialVelocityVectorValue * CosValueOfDegreeAngle(initialVelocityVectorAngle); // x velocity is a constant for we ommit aeordynamic resistance
-            initialVelocityY = initialVelocityVectorValue * SinValueOfDegreeAngle(initialVelocityVectorAngle); // is not constant for vertical velocity is affected by gavity
-            CurrentIteration = (int)iterationBox.Value;
-            spaceTimePoints = new SpaceTimePoint[100];
-        }
-        private void CalculateTimeTotal()
-        {
-            finalTime = (2.0f * initialVelocityVectorValue) * SinValueOfDegreeAngle(initialVelocityVectorAngle) / G;
-        }
-        private void PopulateSpaceTimePointsTable()
-        {
-            for (int i = 0; i < spaceTimePoints.Length; i++)
-            {
-                spaceTimePoints[i] = CreateSpaceTimePointAtIteration(i);
-            }
-        }
-        private float SinValueOfDegreeAngle(float angle)
-        {
-            return (float)Math.Sin(DegreeToRadian(angle));
-        }
-        private float CosValueOfDegreeAngle(float angle)
-        {
-            return (float)Math.Cos(DegreeToRadian(angle));
-        }
-        private float DegreeToRadian(float angle)
-        {
-            return (float)Math.PI * angle / 180.0f;
-        }
-        private void iterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (spaceTimePoints != null)
+            if (spaceTimePoints != null && iterationBox.Value != null)
             {
                 SetCurrentIteration((int)iterationBox.Value);
 
                 PopulateResultFields(CurrentIteration);
+
+                UpdateEllipseElement(spaceTimePoints[CurrentIteration].Position);
+
+                var x = (spaceTimePoints[CurrentIteration].Position.X) / initialVelocityVectorValue;
+
+                //currentXBox.Text = x.ToString();
             }
         }
     }
