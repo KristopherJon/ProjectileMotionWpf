@@ -11,7 +11,6 @@ namespace ProjectileMotionWPF.Data
         public double Vx { get; private set; }
         public double Vy { get; private set; }
 
-
         public Velocity(double Vx, double Vy)
         {
             this.Vx = Vx;

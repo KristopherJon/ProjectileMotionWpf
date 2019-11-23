@@ -10,55 +10,73 @@
         ResizeMode="CanMinimize"
         Title="MainWindow" Height="500" Width="800">
     <Grid>
-        <Button x:Name="CalculateButton" Content="Calculcate trajectory" 
-                HorizontalAlignment="Left" Margin="59,57,0,0" VerticalAlignment="Top" 
+        <Button x:Name="CalculateButton"
+                Content="Calculcate trajectory" 
+                HorizontalAlignment="Left" Margin="59,57,0,0" 
+                VerticalAlignment="Top" 
                 Width="137" Click="CalculateProjectileTrajectory"/>
 
-        <TextBlock x:Name="velocityText" HorizontalAlignment="Left"
+        <TextBlock x:Name="velocityText"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="10,10,0,0" TextWrapping="Wrap" 
-                   Text="Initial Velocity Vector Module" VerticalAlignment="Top"/>
-        <TextBlock x:Name="algleText" HorizontalAlignment="Left"
+                   Text="Initial Velocity Vector Module" />
+        <TextBlock x:Name="angleText" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="200,10,0,0" TextWrapping="Wrap" 
-                   Text="Initial Velocity Vector Degree " VerticalAlignment="Top"/>
-        <TextBlock x:Name="itertationNumber" HorizontalAlignment="Left" 
+                   Text="Initial Velocity Vector Degree "/>
+        <TextBlock x:Name="itertationNumberText"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" 
                    Margin="25,107,0,0" TextWrapping="Wrap" 
-                   Text="iteration number" VerticalAlignment="Top"/>
-        <TextBlock x:Name="velocityXAtIteration" HorizontalAlignment="Left" 
+                   Text="iteration number" />
+        <TextBlock x:Name="velocityXAtIteration"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="9,160,0,0" TextWrapping="Wrap" 
-                   Text="Velocity x at iteration" VerticalAlignment="Top"/>
-        <TextBlock x:Name="velocityYAtIteration" HorizontalAlignment="Left" 
+                   Text="Velocity x at iteration" />
+        <TextBlock x:Name="velocityYAtIteration" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="9,189,0,0" TextWrapping="Wrap" 
-                   Text="Velocity y at iteration" VerticalAlignment="Top"/>
-        <TextBlock x:Name="positionXAtIteration" HorizontalAlignment="Left" 
+                   Text="Velocity y at iteration" />
+        <TextBlock x:Name="positionXAtIteration" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="7,218,0,0" TextWrapping="Wrap" 
-                   Text="position x at iteration" VerticalAlignment="Top"/>
-        <TextBlock x:Name="positionYAtIteration" HorizontalAlignment="Left" 
+                   Text="Position x at iteration" />
+        <TextBlock x:Name="positionYAtIteration" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="7,251,0,0" TextWrapping="Wrap" 
-                   Text="position y at iteration" VerticalAlignment="Top"/>
-        <TextBlock x:Name="finalTimeText" HorizontalAlignment="Left" 
+                   Text="Position y at iteration" />
+        <TextBlock x:Name="FinalTimeText" 
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="71,326,0,0" TextWrapping="Wrap" 
-                   Text="final time" VerticalAlignment="Top"/>
-        <TextBlock x:Name="gravityText" HorizontalAlignment="Left" 
+                   Text="final time" />
+        <TextBlock x:Name="gravityText"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="418,10,0,0" TextWrapping="Wrap" 
-                   Text="gravity" VerticalAlignment="Top"/>
-
-        <TextBox x:Name="velocityXAtIterationBox" HorizontalAlignment="Left" 
-                 Height="24" Margin="125,160,0,0" TextWrapping="Wrap" 
-                 Text="" VerticalAlignment="Top" Width="80"/>
-        <TextBox x:Name="velocityYAtIterationBox" HorizontalAlignment="Left" 
-                 Height="24" Margin="125,189,0,0" TextWrapping="Wrap" 
-                 Text="" VerticalAlignment="Top" Width="80"/>
-        <TextBox x:Name="positionXAtIterationBox" HorizontalAlignment="Left" 
-                 Height="24" Margin="125,218,0,0" TextWrapping="Wrap" 
-                 Text="" VerticalAlignment="Top" Width="80"/>
-        <TextBox x:Name="positionYAtIterationBox" HorizontalAlignment="Left" 
-                 Height="24" Margin="125,251,0,0" TextWrapping="Wrap" 
-                 Text="" VerticalAlignment="Top" Width="80"/>
-        <TextBox x:Name="finalTimeBox" HorizontalAlignment="Left" 
-                 Height="24" Margin="125,326,0,0" TextWrapping="Wrap" 
-                 Text="" VerticalAlignment="Top" Width="80"/>
-
+                   Text="Gravity" />
+        <TextBlock x:Name="densityTheMediumText"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Margin="527,10,0,0" TextWrapping="Wrap" 
+                   Text="Density of the medium" />
         
+        <TextBox x:Name="velocityXAtIterationBox"
+                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Height="24" Margin="125,160,0,0" TextWrapping="Wrap" 
+                 Width="80" Text=""/>
+        <TextBox x:Name="velocityYAtIterationBox" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Height="24" Margin="125,189,0,0" TextWrapping="Wrap" 
+                 Text="" Width="80"/>
+        <TextBox x:Name="positionXAtIterationBox" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Height="24" Margin="125,218,0,0" TextWrapping="Wrap" 
+                 Text="" Width="80"/>
+        <TextBox x:Name="positionYAtIterationBox" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Height="24" Margin="125,251,0,0" TextWrapping="Wrap" 
+                 Text="" Width="80"/>
+        <TextBox x:Name="finalTimeBox" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top"
+                 Height="24" Margin="125,326,0,0" TextWrapping="Wrap" 
+                 Text=""  Width="80"/>
         
         <wpfTool:DecimalUpDown x:Name="InitialVelocityVectorValue"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -86,18 +104,23 @@
                                        Increment="0.1" 
                                        Minimum=".1"
                                        Maximum="99"/>
+        <wpfTool:DecimalUpDown x:Name="DensityOfTheMediumBox"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                                       Margin="527,31,0,0" ClipValueToMinMax="True"
+                                       Value="0"
+                                       Increment="0.1" 
+                                       Minimum="0"
+                                       Maximum="999.9"/>
 
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" 
+        <Border x:Name="chartBorder"
+                BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" 
                 VerticalAlignment="Bottom" Height="318" Margin="250,0,0,50"  Width="530"/>
 
-        <Ellipse x:Name="ellipse" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+        <Ellipse x:Name="ellipse" 
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
                  Margin="243,0,0,43" Stroke="Black" 
                  StrokeThickness="1" Width="14" Height="14" 
                  RenderTransformOrigin="1.429,-0.179" />
-
-
-
-
 
     </Grid>
 </Window>
