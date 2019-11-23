@@ -23,50 +23,108 @@ namespace ProjectileMotionWPF
     {
         //private Position chartStartingPoint = new Position(250, 800 - 100);
 
-        private double gravity;
-        private double initialVelocityVectorValue;
-        private double initialVelocityVectorAngle;
+        private InitialValues initialValues;
 
-        private double initialVelocityX;
-        private double initialVelocityY;
-        private double finalTime;
-        private double maxDistance;
-        private double maxHeight;
+        //private double finalTime;
+        //private double maxDistance;
+        //private double maxHeight;
 
         private int CurrentIteration;
+        
         private SpaceTimePoint[] spaceTimePoints;
-
-        public void SetCurrentIteration(int i)
-        {
-            CurrentIteration = i;
-        }
 
         public MainWindow()
         {
             InitializeComponent();
         }
-
-
         private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         {
             InitializeStartingValues();
+            finalTimeBox.Text = CalculateTotalTime().ToString();
+            descendingTimeBox.Text = CalculateDescendingTime(initialValues).ToString();
+            ascendingTimeBox.Text = CalculateAscendingTime(initialValues).ToString();
         }
 
         private void InitializeStartingValues()
         {
-            gravity = (float)GravityBox.Value;
-            
-            initialVelocityVectorValue = (float)InitialVelocityVectorValue.Value;
-            initialVelocityVectorAngle = (float)InitialVelocityVectorAngle.Value;
-            
-            initialVelocityX = initialVelocityVectorValue * MathHelper.CosValueOfDegreeAngle(initialVelocityVectorAngle); 
-            initialVelocityY = initialVelocityVectorValue * MathHelper.SinValueOfDegreeAngle(initialVelocityVectorAngle); 
+            initialValues = new InitialValues
+            {
+                Gravity = (double)GravityBox.Value,
+                InitialVelocityVectorValue = (double)InitialVelocityVectorValueBox.Value,
+                InitialVelocityVectorAngle = (double)InitialVelocityVectorAngleBox.Value,
+                InitialVelocityX = (double)InitialVelocityVectorValueBox.Value * MathHelper.CosValueOfDegreeAngle((double)InitialVelocityVectorValueBox.Value),
+                InitialVelocityY = (double)InitialVelocityVectorValueBox.Value * MathHelper.SinValueOfDegreeAngle((double)InitialVelocityVectorAngleBox.Value),
+                RadiusOfTheProjectile = (double)ProjectilesRadiusBox.Value,
+                CrossSection = Math.Pow((double)ProjectilesRadiusBox.Value, 2) * Math.PI,
+                DensityOfTheMedium = (double)DensityOfTheMediumBox.Value,
+                DragCoefficient = 0.47 // sphere
+            };
             
             CurrentIteration = (int)iterationBox.Value;
+            
             spaceTimePoints = new SpaceTimePoint[500];
+            for (int i = 0; i < spaceTimePoints.Length; i++)
+            {
+                spaceTimePoints[i] = new SpaceTimePoint();
+            }
+
         }
 
+        private double CalculateTotalTime()
+        {
+            // Total time is the sum of ascending time and descending time. Horizontal motion does not affect the time total.
+            return CalculateAscendingTime(initialValues) + CalculateDescendingTime(initialValues);
+        }
 
+        public double CalculateAscendingTime(InitialValues initialValues)
+        {
+            var time = 0.0d;
+            var timeStep = 0.001d;
+            var yVelocity = initialValues.InitialVelocityY;
+
+            while (yVelocity >= 0.001d)
+            {
+                var dragAtVelocity = MathHelper.CalculateDragAtVelocity(yVelocity, initialValues);
+                var netForce = initialValues.Gravity + dragAtVelocity ;
+                var velocityChangeAfterTimeStep = netForce * timeStep;
+                yVelocity -= velocityChangeAfterTimeStep;
+                time += timeStep;
+            }
+
+            velocityYAtIterationBox.Text = yVelocity.ToString();
+
+            return time;
+        }
+
+        public double CalculateDescendingTime(InitialValues initialValues)
+        {
+            var time = 0.0d;
+            var timeStep = 0.0001d;
+            var yVelocity = 0d;
+
+            while (yVelocity <= initialValues.InitialVelocityY)
+            {
+                var dragAtVelocity = MathHelper.CalculateDragAtVelocity(yVelocity, initialValues);
+                var netForce = initialValues.Gravity - dragAtVelocity;
+                var velocityChangeAfterTimeStep = netForce * timeStep;
+                yVelocity += velocityChangeAfterTimeStep;
+                time += timeStep;
+            }
+
+            return time;
+        }
+
+        private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            //if (spaceTimePoints != null && iterationBox.Value != null)
+            //{
+            //    SetCurrentIteration((int)iterationBox.Value);
+
+            //    PopulateResultFields(CurrentIteration);
+
+            //    UpdateEllipseElement(spaceTimePoints[CurrentIteration].Position);
+            //}
+        }
 
         //private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         //{
@@ -132,16 +190,10 @@ namespace ProjectileMotionWPF
         //{
         //    return finalTime * (i / (float)spaceTimePoints.Length);
         //}
-        //private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+
+        //public void SetCurrentIteration(int i)
         //{
-        //    if (spaceTimePoints != null && iterationBox.Value != null)
-        //    {
-        //        SetCurrentIteration((int)iterationBox.Value);
-
-        //        PopulateResultFields(CurrentIteration);
-
-        //        UpdateEllipseElement(spaceTimePoints[CurrentIteration].Position);
-        //    }
+        //    CurrentIteration = i;
         //}
     }
 }

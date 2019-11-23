@@ -1,4 +1,5 @@
 ﻿using System;
+using ProjectileMotionWPF.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,16 @@ namespace ProjectileMotionWPF
         public static double DegreeToRadian(double angle)
         {
             return Math.PI * angle / 180.0f;
+        }
+        public static double CalculateDragAtVelocity(double currentVelocity, InitialValues initialValues)
+        {
+            var drag = .5d *
+                initialValues.DensityOfTheMedium *
+                Math.Pow(currentVelocity, 2) *
+                initialValues.CrossSection *
+                initialValues.DragCoefficient;
+
+            return drag;
         }
     }
 }

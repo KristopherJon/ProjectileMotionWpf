@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\InitialValues.cs" />
     <Compile Include="Data\SpaceTimePoint.cs" />
     <Compile Include="Data\Velocity.cs" />
     <Page Include="MainWindow.xaml">
