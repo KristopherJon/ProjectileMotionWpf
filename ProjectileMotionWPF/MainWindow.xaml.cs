@@ -21,17 +21,17 @@ namespace ProjectileMotionWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Position chartStartingPoint = new Position(250, 800 - 100);
+        //private Position chartStartingPoint = new Position(250, 800 - 100);
 
-        private float G;
-        private float initialVelocityVectorValue;
-        private float initialVelocityVectorAngle;
+        private double G;
+        private double initialVelocityVectorValue;
+        private double initialVelocityVectorAngle;
 
-        private float velocityX;
-        private float initialVelocityY;
-        private float finalTime;
-        private float maxDistance;
-        private float maxHeight;
+        private double initialVelocityX;
+        private double initialVelocityY;
+        private double finalTime;
+        private double maxDistance;
+        private double maxHeight;
 
         private int CurrentIteration;
         private SpaceTimePoint[] spaceTimePoints;
@@ -62,11 +62,12 @@ namespace ProjectileMotionWPF
         {
             initialVelocityVectorAngle = (float)InitialVelocityVectorAngle.Value;
             initialVelocityVectorValue = (float)InitialVelocityVectorValue.Value;
-            velocityX = initialVelocityVectorValue * MathHelper.CosValueOfDegreeAngle(initialVelocityVectorAngle); // x velocity is a constant for we ommit aeordynamic resistance
+            initialVelocityX = initialVelocityVectorValue * MathHelper.CosValueOfDegreeAngle(initialVelocityVectorAngle); // x velocity is a constant for we ommit aeordynamic resistance
             initialVelocityY = initialVelocityVectorValue * MathHelper.SinValueOfDegreeAngle(initialVelocityVectorAngle); // is not constant for vertical velocity is affected by gavity
             CurrentIteration = (int)iterationBox.Value;
             //G = GravityBox.Value;
-            spaceTimePoints = new SpaceTimePoint[100];
+            spaceTimePoints = new SpaceTimePoint[500];
+            G = (float)GravityBox.Value;
         }
         private void CalculateTimeTotal()
         {
@@ -81,32 +82,33 @@ namespace ProjectileMotionWPF
         }
         private void UpdateEllipseElement(Position newPosition)
         {
+            //ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maxDistance, maxHeight);
             ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maxDistance, maxHeight);
         }
         private SpaceTimePoint CreateSpaceTimePointAtIteration(int i)
         {
             var currentTime = GetTimeAtIteration(i);
 
-            var currentX = velocityX * currentTime;
+            var currentX = initialVelocityX * currentTime;
             var currentY = initialVelocityY * currentTime - (G/2)*((float)Math.Pow(currentTime, 2));
             var position = new Position(currentX, currentY);
 
             var currentVelocityY = initialVelocityY - (G * currentTime);
-            var velocity = new Velocity(velocityX, currentVelocityY);
+            var velocity = new Velocity(initialVelocityX, currentVelocityY);
             
             return new SpaceTimePoint(position, velocity);
         }
         private void PopulateResultFields(int iterationNumber)
         {
-            velocityXAtIterationBox.Text = spaceTimePoints[iterationNumber].Velocity.VX.ToString();
-            velocityYAtIterationBox.Text = spaceTimePoints[iterationNumber].Velocity.VY.ToString();
+            velocityXAtIterationBox.Text = spaceTimePoints[iterationNumber].Velocity.Vx.ToString();
+            velocityYAtIterationBox.Text = spaceTimePoints[iterationNumber].Velocity.Vy.ToString();
 
             positionXAtIterationBox.Text = spaceTimePoints[iterationNumber].Position.X.ToString();
             positionYAtIterationBox.Text = spaceTimePoints[iterationNumber].Position.Y.ToString();
         }
-        private float GetTimeAtIteration(int i)
+        private double GetTimeAtIteration(int i)
         {
-            return finalTime * (i / 100f);
+            return finalTime * (i / (float)spaceTimePoints.Length);
         }
         private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -117,30 +119,7 @@ namespace ProjectileMotionWPF
                 PopulateResultFields(CurrentIteration);
 
                 UpdateEllipseElement(spaceTimePoints[CurrentIteration].Position);
-
-                var x = (spaceTimePoints[CurrentIteration].Position.X) / initialVelocityVectorValue;
-
-                //currentXBox.Text = x.ToString();
             }
         }
     }
 }
-
-
-//<Path Stroke = "Black" StrokeThickness="1" Margin="250,100,50,100" Stretch="Fill">
-//            <Path.Data>
-//                <PathGeometry>
-//                    <PathGeometry.Figures>
-//                        <PathFigureCollection>
-//                            <PathFigure StartPoint = "0,0" >
-//                                < PathFigure.Segments >
-//                                    < PathSegmentCollection >
-//                                        < QuadraticBezierSegment Point1="100,-100" Point2="200,0" />
-//                                    </PathSegmentCollection>
-//                                </PathFigure.Segments>
-//                            </PathFigure>
-//                        </PathFigureCollection>
-//                    </PathGeometry.Figures>
-//                </PathGeometry>
-//            </Path.Data>
-//        </Path>

@@ -78,7 +78,7 @@
                                        Margin="125,108,0,0" ClipValueToMinMax="True"
                                        Value="0"
                                        Increment="1"
-                                       Minimum="0"  Maximum="99" ValueChanged="IterationBox_ValueChanged"/>
+                                       Minimum="0"  Maximum="500" ValueChanged="IterationBox_ValueChanged"/>
         <wpfTool:DecimalUpDown x:Name="GravityBox"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
                                        Margin="418,31,0,0" ClipValueToMinMax="True"

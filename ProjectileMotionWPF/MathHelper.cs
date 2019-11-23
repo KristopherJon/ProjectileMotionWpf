@@ -8,17 +8,17 @@ namespace ProjectileMotionWPF
 {
     public static class MathHelper
     {
-        public static float SinValueOfDegreeAngle(float angle)
+        public static double SinValueOfDegreeAngle(double angle)
         {
-            return (float)Math.Sin(DegreeToRadian(angle));
+            return Math.Sin(DegreeToRadian(angle));
         }
-        public static float CosValueOfDegreeAngle(float angle)
+        public static double CosValueOfDegreeAngle(double angle)
         {
-            return (float)Math.Cos(DegreeToRadian(angle));
+            return Math.Cos(DegreeToRadian(angle));
         }
-        public static float DegreeToRadian(float angle)
+        public static double DegreeToRadian(double angle)
         {
-            return (float)Math.PI * angle / 180.0f;
+            return Math.PI * angle / 180.0f;
         }
     }
 }

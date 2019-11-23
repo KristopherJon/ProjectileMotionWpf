@@ -8,12 +8,11 @@ namespace ProjectileMotionWPF.Data
 {
     public class Velocity
     {
-        private readonly float Vx;
-        private readonly float Vy;
-        public float VX => Vx;
-        public float VY => Vy;
+        public double Vx { get; private set; }
+        public double Vy { get; private set; }
 
-    public Velocity(float Vx, float Vy)
+
+        public Velocity(double Vx, double Vy)
         {
             this.Vx = Vx;
             this.Vy = Vy;

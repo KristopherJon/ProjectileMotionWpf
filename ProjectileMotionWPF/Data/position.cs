@@ -8,15 +8,13 @@ namespace ProjectileMotionWPF.Data
 {
     public class Position
     {
-        private readonly float x;
-        private readonly float y;
-        public float X => x;
-        public float Y => y;
+        public double X { get; private set; }
+        public double Y { get; private set; }
 
-        public Position(float x, float y)
+        public Position(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
     }
 }
