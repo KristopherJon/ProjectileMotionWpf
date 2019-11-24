@@ -10,6 +10,7 @@
         public double InitialVelocityY           { get; set; }
         public double DensityOfTheMedium         { get; set; }
         public double RadiusOfTheProjectile      { get; set; }
-        public double CrossSection               { get; set; }
+        public double CrossSectionArea           { get; set; }
+        public double Mass                       { get; set; }
     }
 }

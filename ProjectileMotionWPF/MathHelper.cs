@@ -26,7 +26,7 @@ namespace ProjectileMotionWPF
             var drag = .5d *
                 initialValues.DensityOfTheMedium *
                 Math.Pow(currentVelocity, 2) *
-                initialValues.CrossSection *
+                initialValues.CrossSectionArea *
                 initialValues.DragCoefficient;
 
             return drag;

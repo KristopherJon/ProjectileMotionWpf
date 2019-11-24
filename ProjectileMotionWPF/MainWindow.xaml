@@ -68,6 +68,10 @@
             HorizontalAlignment="Left" VerticalAlignment="Top"
             Margin="604,26,0,0" TextWrapping="Wrap" 
             Text="Radius of the projectile" />
+        <TextBlock x:Name="projectilesMassText"
+            HorizontalAlignment="Left" VerticalAlignment="Top"
+            Margin="612,59,0,0" TextWrapping="Wrap" 
+            Text="Mass of the projectile" />
 
         <TextBox x:Name="velocityXAtIterationBox"
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
@@ -132,12 +136,19 @@
                                        Minimum="0"
                                        Maximum="999.9"/>
         <wpfTool:DecimalUpDown x:Name="ProjectilesRadiusBox"
-            HorizontalAlignment="Left" VerticalAlignment="Top"
-            Margin="604,47,0,0" ClipValueToMinMax="True"
-            Value="1"
-            Increment="0.1" 
-            Minimum="0.1"
-            Maximum="999.9"/>
+                               HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Margin="731,26,0,0" ClipValueToMinMax="True"
+                               Value="0.1"
+                               Increment="0.1" 
+                               Minimum="0.1"
+                               Maximum="999.9"/>
+        <wpfTool:DecimalUpDown x:Name="ProjectilesMassBox"
+                               HorizontalAlignment="Left" VerticalAlignment="Top"
+                               Margin="731,57,0,0" ClipValueToMinMax="True"
+                               Value="0.1"
+                               Increment="0.1" 
+                               Minimum="0.1"
+                               Maximum="999.9"/>
 
         <Border x:Name="chartBorder"
                 BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" 
@@ -148,6 +159,8 @@
                  Margin="243,0,0,43" Stroke="Black" 
                  StrokeThickness="1" Width="14" Height="14" 
                  RenderTransformOrigin="1.429,-0.179" />
+        
+        <CheckBox x:Name="terminalVelocityBox" Content="Terminal velocity reached" HorizontalAlignment="Left" Margin="103,446,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

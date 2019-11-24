@@ -40,9 +40,9 @@ namespace ProjectileMotionWPF
         private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         {
             InitializeStartingValues();
-            finalTimeBox.Text = CalculateTotalTime().ToString();
+            //finalTimeBox.Text = CalculateTotalTime().ToString();
             descendingTimeBox.Text = CalculateDescendingTime(initialValues).ToString();
-            ascendingTimeBox.Text = CalculateAscendingTime(initialValues).ToString();
+            //ascendingTimeBox.Text = CalculateAscendingTime(initialValues).ToString();
         }
 
         private void InitializeStartingValues()
@@ -55,8 +55,9 @@ namespace ProjectileMotionWPF
                 InitialVelocityX = (double)InitialVelocityVectorValueBox.Value * MathHelper.CosValueOfDegreeAngle((double)InitialVelocityVectorValueBox.Value),
                 InitialVelocityY = (double)InitialVelocityVectorValueBox.Value * MathHelper.SinValueOfDegreeAngle((double)InitialVelocityVectorAngleBox.Value),
                 RadiusOfTheProjectile = (double)ProjectilesRadiusBox.Value,
-                CrossSection = Math.Pow((double)ProjectilesRadiusBox.Value, 2) * Math.PI,
+                CrossSectionArea = Math.Pow((double)ProjectilesRadiusBox.Value, 2) * Math.PI,
                 DensityOfTheMedium = (double)DensityOfTheMediumBox.Value,
+                Mass = (double)ProjectilesMassBox.Value,
                 DragCoefficient = 0.47 // sphere
             };
             
@@ -67,7 +68,6 @@ namespace ProjectileMotionWPF
             {
                 spaceTimePoints[i] = new SpaceTimePoint();
             }
-
         }
 
         private double CalculateTotalTime()
@@ -76,6 +76,9 @@ namespace ProjectileMotionWPF
             return CalculateAscendingTime(initialValues) + CalculateDescendingTime(initialValues);
         }
 
+        /// <summary>
+        /// Calculates time it takes the projectile's speed to reach a number "close" to zero.
+        /// </summary>
         public double CalculateAscendingTime(InitialValues initialValues)
         {
             var time = 0.0d;
@@ -96,11 +99,12 @@ namespace ProjectileMotionWPF
             return time;
         }
 
+
         public double CalculateDescendingTime(InitialValues initialValues)
         {
             var time = 0.0d;
-            var timeStep = 0.0001d;
-            var yVelocity = 0d;
+            var timeStep = 0.001d;
+            var yVelocity = 0.000d;
 
             while (yVelocity <= initialValues.InitialVelocityY)
             {
@@ -109,9 +113,31 @@ namespace ProjectileMotionWPF
                 var velocityChangeAfterTimeStep = netForce * timeStep;
                 yVelocity += velocityChangeAfterTimeStep;
                 time += timeStep;
+
+                if (velocityChangeAfterTimeStep <= 0.001)
+                {
+                    terminalVelocityBox.IsChecked = true;
+                }
             }
 
             return time;
+        }
+
+        private double CalculateTerminalVelocity(InitialValues initialValues)
+        {
+            //For the reference: https://www.grc.nasa.gov/WWW/K-12/airplane/termv.html
+
+            var numerator = 2 * initialValues.Mass;
+            var denominator = initialValues.DragCoefficient * initialValues.DensityOfTheMedium * initialValues.CrossSectionArea;
+
+            return Math.Sqrt(numerator / denominator);
+        }
+
+        private double CalculatePositionY()
+        {
+
+
+            return 1d;
         }
 
         private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
