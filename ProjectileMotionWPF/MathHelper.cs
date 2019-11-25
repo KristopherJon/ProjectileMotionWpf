@@ -31,5 +31,28 @@ namespace ProjectileMotionWPF
 
             return drag;
         }
+        public static double CalculateTerminalVelocity(InitialValues initialValues)
+        {
+            //For the reference: https://www.grc.nasa.gov/WWW/K-12/airplane/termv.html
+
+            var numerator = 2 * initialValues.Mass;
+            var denominator = initialValues.DragCoefficient * initialValues.DensityOfTheMedium * initialValues.CrossSectionArea;
+
+            return Math.Sqrt(numerator / denominator);
+        }
+        public static double Get_Y_PositionAfterDeltaTime(double current_Y_Position, double deltaTime, double Y_Velocity)
+        {
+            // v = s/t <=> s = v * t
+
+            var deltaY = Y_Velocity * deltaTime;
+
+            return current_Y_Position + deltaY;
+
+        }
+        public static double GetDeltaVelocity(double deltaTime, double netForce)
+        {
+            return deltaTime * netForce;
+        }
+
     }
 }

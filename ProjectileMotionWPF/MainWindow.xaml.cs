@@ -40,9 +40,15 @@ namespace ProjectileMotionWPF
         private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         {
             InitializeStartingValues();
+            //CalculateTotalTime();
             //finalTimeBox.Text = CalculateTotalTime().ToString();
-            descendingTimeBox.Text = CalculateDescendingTime(initialValues).ToString();
-            //ascendingTimeBox.Text = CalculateAscendingTime(initialValues).ToString();
+            
+            var ascendingTime = CalculateAscendingTime(initialValues);
+            ascendingTimeBox.Text = ascendingTime.ToString();
+
+            //var descendingTime = CalculateDescendingTime(initialValues, 
+            //descendingTimeBox.Text = .ToString();
+
         }
 
         private void InitializeStartingValues()
@@ -73,7 +79,11 @@ namespace ProjectileMotionWPF
         private double CalculateTotalTime()
         {
             // Total time is the sum of ascending time and descending time. Horizontal motion does not affect the time total.
-            return CalculateAscendingTime(initialValues) + CalculateDescendingTime(initialValues);
+
+            var ascendingTime = CalculateAscendingTime(initialValues);
+            var descendingTime = CalculateDescendingTime(initialValues, ascendingTime);
+
+            return ascendingTime + descendingTime;
         }
 
         /// <summary>
@@ -82,63 +92,50 @@ namespace ProjectileMotionWPF
         public double CalculateAscendingTime(InitialValues initialValues)
         {
             var time = 0.0d;
-            var timeStep = 0.001d;
-            var yVelocity = initialValues.InitialVelocityY;
+            var deltaTime = 0.001d;
+            var Y_Velocity = initialValues.InitialVelocityY;
+            var Y_Position = 0d;
 
-            while (yVelocity >= 0.001d)
+            while (Y_Velocity >= 0.001d)
             {
-                var dragAtVelocity = MathHelper.CalculateDragAtVelocity(yVelocity, initialValues);
-                var netForce = initialValues.Gravity + dragAtVelocity ;
-                var velocityChangeAfterTimeStep = netForce * timeStep;
-                yVelocity -= velocityChangeAfterTimeStep;
-                time += timeStep;
+                var dragAtVelocity = MathHelper.CalculateDragAtVelocity(Y_Velocity, initialValues);
+                var netForce = initialValues.Gravity + dragAtVelocity;
+                
+                Y_Velocity -= MathHelper.GetDeltaVelocity(deltaTime, netForce);
+                Y_Position += MathHelper.Get_Y_PositionAfterDeltaTime(Y_Position, deltaTime, Y_Velocity);
+
+                time += deltaTime;
             }
 
-            velocityYAtIterationBox.Text = yVelocity.ToString();
+            velocityYAtIterationBox.Text = Y_Velocity.ToString();
+            positionYAtIterationBox.Text = Y_Position.ToString();
 
             return time;
         }
 
-
-        public double CalculateDescendingTime(InitialValues initialValues)
+        public double CalculateDescendingTime(InitialValues initialValues, double Y_Maximum)
         {
             var time = 0.0d;
             var timeStep = 0.001d;
-            var yVelocity = 0.000d;
+            var Y_Velocity = 0.000d;
+            var Y_Position = Y_Maximum;
 
-            while (yVelocity <= initialValues.InitialVelocityY)
+            while (Y_Position >= 0)
             {
-                var dragAtVelocity = MathHelper.CalculateDragAtVelocity(yVelocity, initialValues);
+                var dragAtVelocity = MathHelper.CalculateDragAtVelocity(Y_Velocity, initialValues);
                 var netForce = initialValues.Gravity - dragAtVelocity;
-                var velocityChangeAfterTimeStep = netForce * timeStep;
-                yVelocity += velocityChangeAfterTimeStep;
+                
+                Y_Velocity += MathHelper.GetDeltaVelocity(timeStep, netForce);
+                Y_Position -= MathHelper.Get_Y_PositionAfterDeltaTime(Y_Position, timeStep, Y_Velocity);
+                
                 time += timeStep;
-
-                if (velocityChangeAfterTimeStep <= 0.001)
-                {
-                    terminalVelocityBox.IsChecked = true;
-                }
             }
 
             return time;
         }
 
-        private double CalculateTerminalVelocity(InitialValues initialValues)
-        {
-            //For the reference: https://www.grc.nasa.gov/WWW/K-12/airplane/termv.html
 
-            var numerator = 2 * initialValues.Mass;
-            var denominator = initialValues.DragCoefficient * initialValues.DensityOfTheMedium * initialValues.CrossSectionArea;
-
-            return Math.Sqrt(numerator / denominator);
-        }
-
-        private double CalculatePositionY()
-        {
-
-
-            return 1d;
-        }
+        
 
         private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
