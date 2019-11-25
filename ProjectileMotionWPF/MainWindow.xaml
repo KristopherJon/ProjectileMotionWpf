@@ -107,7 +107,7 @@
                                        Margin="10,31,0,0" ClipValueToMinMax="True"
                                        Value="10"
                                        Increment="0.1"
-                                       Minimum="0" />
+                                       Minimum="0" Maximum="100" />
         <wpfTool:DecimalUpDown x:Name="InitialVelocityVectorAngleBox"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
                                        Margin="200,31,0,0" ClipValueToMinMax="True"
@@ -134,21 +134,21 @@
                                        Value="0"
                                        Increment="0.1" 
                                        Minimum="0"
-                                       Maximum="999.9"/>
+                                       Maximum="10"/>
         <wpfTool:DecimalUpDown x:Name="ProjectilesRadiusBox"
                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                Margin="731,26,0,0" ClipValueToMinMax="True"
                                Value="0.1"
                                Increment="0.1" 
                                Minimum="0.1"
-                               Maximum="999.9"/>
+                               Maximum="20"/>
         <wpfTool:DecimalUpDown x:Name="ProjectilesMassBox"
                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                Margin="731,57,0,0" ClipValueToMinMax="True"
                                Value="0.1"
                                Increment="0.1" 
                                Minimum="0.1"
-                               Maximum="999.9"/>
+                               Maximum="20"/>
 
         <Border x:Name="chartBorder"
                 BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" 

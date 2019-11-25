@@ -70,6 +70,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calculators\AscendingTimeCalculator.cs" />
+    <Compile Include="Calculators\DeltaPositionCalculator.cs" />
+    <Compile Include="Calculators\DeltaVelocityCalculator.cs" />
+    <Compile Include="Calculators\DescendingTimeCalculator.cs" />
+    <Compile Include="Calculators\DragCalculator.cs" />
+    <Compile Include="Calculators\TerminalVelocityCalculator.cs" />
     <Compile Include="Data\InitialValues.cs" />
     <Compile Include="Data\SpaceTimePoint.cs" />
     <Compile Include="Data\Velocity.cs" />
@@ -89,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\position.cs" />
-    <Compile Include="MathHelper.cs" />
+    <Compile Include="Calculators\MathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -119,5 +125,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
