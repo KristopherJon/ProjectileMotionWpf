@@ -10,10 +10,7 @@
         ResizeMode="CanMinimize"
         Title="MainWindow" Height="500" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="308*"/>
-            <RowDefinition Height="163*"/>
-        </Grid.RowDefinitions>
+
         <Button x:Name="CalculateButton"
                 Content="Calculcate trajectory" 
                 HorizontalAlignment="Left" Margin="59,57,0,0" 
@@ -28,7 +25,7 @@
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="200,10,0,0" TextWrapping="Wrap" 
                    Text="Initial Velocity Vector Degree "/>
-        
+
         <TextBlock x:Name="velocityXAtIteration"
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="9,105,0,0" TextWrapping="Wrap" 
@@ -104,8 +101,8 @@
                  Text=""  Width="116" Grid.RowSpan="2"/>
         <TextBox x:Name="currentSliderValue" 
                  HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Height="24" Margin="122,119,0,0" TextWrapping="Wrap" 
-                 Text=""  Width="116" Grid.Row="1"/>
+                 Height="24" Margin="84,424,0,0" TextWrapping="Wrap" 
+                 Text=""  Width="116"/>
 
         <wpfTool:DecimalUpDown x:Name="InitialVelocityVectorValueBox"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -120,7 +117,7 @@
                                        Increment="0.1" 
                                        Minimum="0"
                                        Maximum="89.999"/>
-        
+
         <wpfTool:DecimalUpDown x:Name="GravityBox"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
                                        Margin="375,47,0,0" ClipValueToMinMax="True"
@@ -128,7 +125,7 @@
                                        Increment="0.1" 
                                        Minimum=".1"
                                        Maximum="99"/>
-        
+
         <wpfTool:DecimalUpDown x:Name="DensityOfTheMediumBox"
                                        HorizontalAlignment="Left" VerticalAlignment="Top"
                                        Margin="462,47,0,0" ClipValueToMinMax="True"
@@ -161,11 +158,14 @@
                  StrokeThickness="1" Width="14" Height="14" 
                  RenderTransformOrigin="1.429,-0.179" Grid.Row="1" />
 
-        <CheckBox x:Name="terminalVelocityCheckbox" Content="Terminal velocity reached" HorizontalAlignment="Left" Margin="87,35,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <CheckBox x:Name="terminalVelocityCheckbox" 
+                  Content="Terminal velocity reached" 
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Margin="84,393,0,0" />
 
         <Slider x:Name="iterationSlider"
                 HorizontalAlignment="Left" VerticalAlignment="Top" 
-                Margin="272,125,0,0" Width="500" Grid.Row="1" 
+                Margin="243,433,0,0" Width="500" 
                 Minimum="0" Maximum="499" ValueChanged="iterationSlider_ValueChanged" 
                 IsSnapToTickEnabled="True" TickFrequency="1"/>
 

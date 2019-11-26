@@ -19,6 +19,7 @@ namespace ProjectileMotionWPF
         
         private SpaceTimePoint[] spaceTimePoints;
 
+        private double maximumX;
         private double maximumY;
         private double timeTotal;
         private double deltaTime; //chart time step
@@ -42,7 +43,6 @@ namespace ProjectileMotionWPF
                 InitialVelocityVectorValue = (double)InitialVelocityVectorValueBox.Value,
                 InitialVelocityVectorAngle = (double)InitialVelocityVectorAngleBox.Value,
             };
-
         }
         private void InitializeSpaceTimePoints()
         {
@@ -86,6 +86,8 @@ namespace ProjectileMotionWPF
             {
                 spaceTimePoints[i+1] = CalculateSpaceTimePoint(spaceTimePoints[i]);
             }
+
+            maximumX = spaceTimePoints[spaceTimePoints.Length - 1].Position.X;
         }
 
         public SpaceTimePoint CalculateSpaceTimePoint(SpaceTimePoint previousSpaceTimePoint)
@@ -115,10 +117,13 @@ namespace ProjectileMotionWPF
 
         public Position CalculatePosition(SpaceTimePoint previousSpaceTimePoint)
         {
+            var calculatedX = previousSpaceTimePoint.Position.X + DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, previousSpaceTimePoint.Velocity.Vx);
+            var calculatedY = previousSpaceTimePoint.Position.Y + DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, previousSpaceTimePoint.Velocity.Vy);
+
             var position = new Position
             {
-                X = previousSpaceTimePoint.Position.X + DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, previousSpaceTimePoint.Velocity.Vx),
-                Y = previousSpaceTimePoint.Position.Y + DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, previousSpaceTimePoint.Velocity.Vy)
+                X = calculatedX,
+                Y = calculatedY > 0 ? calculatedY : 0d
             };
 
             return position;
@@ -137,29 +142,12 @@ namespace ProjectileMotionWPF
             finalTimeBox.Text = timeTotal.ToString();
         }
 
-        //private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        //{
-        //    CurrentIteration = (int)iterationBox.Value;
-
-        //    if (spaceTimePoints != null)
-        //    {
-        //        var spaceTimePoint = spaceTimePoints[CurrentIteration];
-            
-        //        velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
-        //        velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
-
-        //        positionXAtIterationBox.Text = spaceTimePoint.Position.X.ToString();
-        //        positionYAtIterationBox.Text = spaceTimePoint.Position.Y.ToString();
-        //    }
-        //}
-
         private void iterationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             currentSliderValue.Text = iterationSlider.Value.ToString();
             CurrentIteration = (int)iterationSlider.Value;
 
             var position = new Position();
-            
 
             if (spaceTimePoints != null)
             {
@@ -175,14 +163,19 @@ namespace ProjectileMotionWPF
                 positionYAtIterationBox.Text = position.Y.ToString();
             }
 
-            UpdateEllipseElement(position);
-
+            UpdateEllipseElement(position, maximumX, maximumY);
         }
 
-
-        private void UpdateEllipseElement(Position newPosition)
+        private void UpdateEllipseElement(Position newPosition, double maximumX, double maximumY)
         {
-            ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition);
+            try
+            {
+                ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maximumX, maximumY);
+            }
+            catch (Exception)
+            {
+            }
+            
         }
     }
 }
