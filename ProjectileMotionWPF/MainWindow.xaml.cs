@@ -13,16 +13,16 @@ namespace ProjectileMotionWPF
     {
         //private Position chartStartingPoint = new Position(250, 800 - 100);
         
-        private int CurrentIteration;
+        int CurrentIteration;
         
-        private InitialValues initialValues;
+        InitialValues initialValues;
         
-        private SpaceTimePoint[] spaceTimePoints;
+        List<SpaceTimePoint> spaceTimePoints;
 
-        private double maximumX;
-        private double maximumY;
-        private double timeTotal;
-        private double deltaTime; //chart time step
+        double maximumX;
+        double maximumY;
+        double finalTime = 0;
+        readonly double deltaTime = 0.01d ; //physics time step
 
         public MainWindow()
         {
@@ -46,26 +46,18 @@ namespace ProjectileMotionWPF
         }
         private void InitializeSpaceTimePoints()
         {
-            spaceTimePoints = new SpaceTimePoint[500];
-
-            for (int i = 0; i < spaceTimePoints.Length; i++)
-            {
-                spaceTimePoints[i] = new SpaceTimePoint();
-            }
+            spaceTimePoints = new List<SpaceTimePoint>();
         }
 
         private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         {
             InitializeStartingValues();
             InitializeSpaceTimePoints();
-            CalculateTotalTime();
             CalculateTrajectory();
         }
 
         public void CalculateTrajectory()
         {
-            deltaTime = timeTotal / spaceTimePoints.Length;
-
             var initialPoint = new SpaceTimePoint
             {
                 Velocity = new Velocity
@@ -80,14 +72,28 @@ namespace ProjectileMotionWPF
                 }
             };
 
-            spaceTimePoints[0] = initialPoint;
+            spaceTimePoints.Add(initialPoint);
 
-            for (int i = 0; i < spaceTimePoints.Length - 1; i++)
+            int i = 0;
+            finalTime = 0;
+
+            while (spaceTimePoints[spaceTimePoints.Count - 1].Position.Y >= 0)
             {
-                spaceTimePoints[i+1] = CalculateSpaceTimePoint(spaceTimePoints[i]);
-            }
+                finalTime += deltaTime;
+                var newPoint = CalculateSpaceTimePoint(spaceTimePoints[i]);
+                spaceTimePoints.Add(newPoint);
+                if (newPoint.Position.Y <= 0d)
+                {
+                    newPoint.Position.Y = 0d;
+                    break;
+                }
+                i++;
+            };
 
-            maximumX = spaceTimePoints[spaceTimePoints.Length - 1].Position.X;
+            iterationSlider.Maximum = spaceTimePoints.Count - 1;
+            finalTimeBox.Text = finalTime.ToString();
+            maximumX = spaceTimePoints[spaceTimePoints.Count - 1].Position.X;
+            maximumY = spaceTimePoints[spaceTimePoints.Count - 1].Position.Y;
         }
 
         public SpaceTimePoint CalculateSpaceTimePoint(SpaceTimePoint previousSpaceTimePoint)
@@ -123,23 +129,10 @@ namespace ProjectileMotionWPF
             var position = new Position
             {
                 X = calculatedX,
-                Y = calculatedY > 0 ? calculatedY : 0d
+                Y = calculatedY
             };
 
             return position;
-        }
-
-        public void CalculateTotalTime()
-        {
-            // Total time is the sum of ascending time and descending time. Horizontal motion does not affect the time total.
-
-            var ascendingTime = AscendingTimeCalculator.CalculateAscendingTime(initialValues, out maximumY);
-            var descendingTime = DescendingTimeCalculator.CalculateDescendingTime(initialValues, maximumY, terminalVelocityCheckbox);
-
-            ascendingTimeBox.Text = ascendingTime.ToString();
-            descendingTimeBox.Text = descendingTime.ToString();
-            timeTotal = (ascendingTime + descendingTime);
-            finalTimeBox.Text = timeTotal.ToString();
         }
 
         private void iterationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -175,7 +168,6 @@ namespace ProjectileMotionWPF
             catch (Exception)
             {
             }
-            
         }
     }
 }

@@ -70,16 +70,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Calculators\AscendingTimeCalculator.cs" />
     <Compile Include="Calculators\DeltaPositionCalculator.cs" />
     <Compile Include="Calculators\DeltaVelocityCalculator.cs" />
-    <Compile Include="Calculators\DescendingTimeCalculator.cs" />
     <Compile Include="Calculators\DragCalculator.cs" />
     <Compile Include="Calculators\TerminalVelocityCalculator.cs" />
     <Compile Include="Data\InitialValues.cs" />
     <Compile Include="Data\SpaceTimePoint.cs" />
     <Compile Include="Data\Velocity.cs" />
-    <Compile Include="Updaters\TextFieldsUpdater.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

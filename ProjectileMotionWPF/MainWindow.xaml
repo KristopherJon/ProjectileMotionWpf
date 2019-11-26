@@ -46,14 +46,6 @@
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="69,241,0,0" TextWrapping="Wrap" 
                    Text="Final time" />
-        <TextBlock x:Name="ascendingTimeText" 
-                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                   Margin="39,270,0,0" TextWrapping="Wrap" 
-                   Text="Ascending time" />
-        <TextBlock x:Name="dscendingTimeText" 
-                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                   Margin="32,299,0,0" TextWrapping="Wrap" 
-                   Text="Dsscending time" Grid.RowSpan="2" />
         <TextBlock x:Name="gravityText"
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Margin="375,26,0,0" TextWrapping="Wrap" 
@@ -91,14 +83,6 @@
                  HorizontalAlignment="Left" VerticalAlignment="Top"
                  Height="24" Margin="125,241,0,0" TextWrapping="Wrap" 
                  Text=""  Width="116"/>
-        <TextBox x:Name="ascendingTimeBox" 
-                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Height="24" Margin="125,270,0,0" TextWrapping="Wrap" 
-                 Text=""  Width="116"/>
-        <TextBox x:Name="descendingTimeBox" 
-                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Height="24" Margin="125,299,0,0" TextWrapping="Wrap" 
-                 Text=""  Width="116" Grid.RowSpan="2"/>
         <TextBox x:Name="currentSliderValue" 
                  HorizontalAlignment="Left" VerticalAlignment="Top"
                  Height="24" Margin="84,424,0,0" TextWrapping="Wrap" 
@@ -158,15 +142,10 @@
                  StrokeThickness="1" Width="14" Height="14" 
                  RenderTransformOrigin="1.429,-0.179" Grid.Row="1" />
 
-        <CheckBox x:Name="terminalVelocityCheckbox" 
-                  Content="Terminal velocity reached" 
-                  HorizontalAlignment="Left" VerticalAlignment="Top"
-                  Margin="84,393,0,0" />
-
         <Slider x:Name="iterationSlider"
                 HorizontalAlignment="Left" VerticalAlignment="Top" 
                 Margin="243,433,0,0" Width="500" 
-                Minimum="0" Maximum="499" ValueChanged="iterationSlider_ValueChanged" 
+                Minimum="0" Maximum="1" ValueChanged="iterationSlider_ValueChanged" 
                 IsSnapToTickEnabled="True" TickFrequency="1"/>
 
     </Grid>
