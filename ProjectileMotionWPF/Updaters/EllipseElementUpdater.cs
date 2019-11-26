@@ -1,7 +1,7 @@
 ﻿using ProjectileMotionWPF.Data;
 using System.Windows;
 
-namespace ProjectileMotionWPF
+namespace ProjectileMotionWPF.Updaters
 {
     public static class EllipsePositionCalculator
     {

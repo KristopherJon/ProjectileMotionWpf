@@ -160,7 +160,7 @@
                  StrokeThickness="1" Width="14" Height="14" 
                  RenderTransformOrigin="1.429,-0.179" />
         
-        <CheckBox x:Name="terminalVelocityBox" Content="Terminal velocity reached" HorizontalAlignment="Left" Margin="103,446,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="terminalVelocityCheckbox" Content="Terminal velocity reached" HorizontalAlignment="Left" Margin="103,446,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
