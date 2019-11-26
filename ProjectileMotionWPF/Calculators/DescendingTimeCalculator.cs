@@ -18,7 +18,6 @@ namespace ProjectileMotionWPF.Calculators
             var Y_Position = Y_Maximum;
             terminalVelocityCheckbox.IsChecked = false;
 
-
             while (Y_Position >= 0)
             {
                 var dragAtVelocity = DragCalculator.CalculateDragAtVelocity(Y_Velocity, initialValues);

@@ -2,7 +2,7 @@
 {
     public class Velocity
     {
-        public double Vx { get; set; }
-        public double Vy { get; set; }
+        public double Vx { get; set; } = 0;
+        public double Vy { get; set; } = 0;
     }
 }

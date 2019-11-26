@@ -20,18 +20,16 @@ namespace ProjectileMotionWPF
 
         private double maximumY;
         private double timeTotal;
-        private double chartTimeStep;
+        private double deltaTime; //chart time step
 
         public MainWindow()
         {
             InitializeComponent();
-            InitializeSpaceTimePoints();
         }
         private void InitializeStartingValues()
         {
             initialValues = new InitialValues
             {
-                Mass = (double)ProjectilesMassBox.Value,
                 Gravity = (double)GravityBox.Value,
                 DragCoefficient = 0.47,
                 CrossSectionArea = Math.Pow((double)ProjectilesRadiusBox.Value, 2) * Math.PI,
@@ -58,19 +56,75 @@ namespace ProjectileMotionWPF
         private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         {
             InitializeStartingValues();
+            InitializeSpaceTimePoints();
             CalculateTotalTime();
-
+            CalculateTrajectory();
         }
 
         public void CalculateTrajectory()
         {
-            chartTimeStep = timeTotal / spaceTimePoints.Length;
+            deltaTime = timeTotal / spaceTimePoints.Length;
 
-            for (int i = 0; i < spaceTimePoints.Length -1 ; i++)
+            var initialPoint = new SpaceTimePoint
             {
+                Velocity = new Velocity
+                {
+                    Vx = initialValues.InitialVelocityX,
+                    Vy = initialValues.InitialVelocityY
+                },
+                Position = new Position
+                {
+                    X = 0,
+                    Y = 0,
+                }
+            };
 
+            spaceTimePoints[0] = initialPoint;
+
+            for (int i = 0; i < spaceTimePoints.Length - 1; i++)
+            {
+                spaceTimePoints[i+1] = CalculateSpaceTimePoint(spaceTimePoints[i]);
             }
         }
+
+        public SpaceTimePoint CalculateSpaceTimePoint(SpaceTimePoint previousSpaceTimePoint)
+        {
+            var spaceTimePoint = new SpaceTimePoint
+            {
+                Position = CalculatePosition(previousSpaceTimePoint.Position),
+                Velocity = CalculateVelocity(previousSpaceTimePoint.Velocity)
+            };
+
+            return spaceTimePoint;
+        }
+
+        public Velocity CalculateVelocity(Velocity previousVelocity)
+        {
+            var x_netForce = DragCalculator.CalculateDragAtVelocity(previousVelocity.Vx, initialValues);
+            var y_netForce = (initialValues.Gravity) + DragCalculator.CalculateDragAtVelocity(previousVelocity.Vy, initialValues);
+
+            var velocity = new Velocity
+            {
+                Vx = previousVelocity.Vx - DeltaVelocityCalculator.CalculateDeltaVelocity(deltaTime, x_netForce),
+                Vy = previousVelocity.Vy - DeltaVelocityCalculator.CalculateDeltaVelocity(deltaTime, y_netForce),
+            };
+
+            return velocity;
+        }
+
+
+        public Position CalculatePosition(Position previousPosition)
+        {
+            var position = new Position
+            {
+                X = 1d,
+                Y = 1d
+            };
+
+            return position;
+        }
+
+
 
         public void CalculateTotalTime()
         {
@@ -87,7 +141,18 @@ namespace ProjectileMotionWPF
 
         private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            CurrentIteration = (int)iterationBox.Value;
+
+            if (spaceTimePoints != null)
+            {
+                var spaceTimePoint = spaceTimePoints[CurrentIteration];
             
+                velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
+                velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
+
+                positionXAtIterationBox.Text = spaceTimePoint.Position.X.ToString();
+                positionYAtIterationBox.Text = spaceTimePoint.Position.Y.ToString();
+            }
         }
 
         //private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
