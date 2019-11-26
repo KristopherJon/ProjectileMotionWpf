@@ -2,6 +2,7 @@
 using System.Windows;
 using ProjectileMotionWPF.Data;
 using ProjectileMotionWPF.Calculators;
+using ProjectileMotionWPF.Updaters;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Collections.Generic;
@@ -42,7 +43,6 @@ namespace ProjectileMotionWPF
                 InitialVelocityVectorAngle = (double)InitialVelocityVectorAngleBox.Value,
             };
 
-            CurrentIteration = (int)iterationBox.Value;
         }
         private void InitializeSpaceTimePoints()
         {
@@ -137,84 +137,52 @@ namespace ProjectileMotionWPF
             finalTimeBox.Text = timeTotal.ToString();
         }
 
-        private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            CurrentIteration = (int)iterationBox.Value;
+        //private void IterationBox_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        //{
+        //    CurrentIteration = (int)iterationBox.Value;
 
-            if (spaceTimePoints != null)
-            {
-                var spaceTimePoint = spaceTimePoints[CurrentIteration];
+        //    if (spaceTimePoints != null)
+        //    {
+        //        var spaceTimePoint = spaceTimePoints[CurrentIteration];
             
-                velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
-                velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
+        //        velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
+        //        velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
 
-                positionXAtIterationBox.Text = spaceTimePoint.Position.X.ToString();
-                positionYAtIterationBox.Text = spaceTimePoint.Position.Y.ToString();
-            }
-        }
+        //        positionXAtIterationBox.Text = spaceTimePoint.Position.X.ToString();
+        //        positionYAtIterationBox.Text = spaceTimePoint.Position.Y.ToString();
+        //    }
+        //}
 
         private void iterationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             currentSliderValue.Text = iterationSlider.Value.ToString();
+            CurrentIteration = (int)iterationSlider.Value;
 
-            //if (spaceTimePoints != null)
-            //{
-            //    var spaceTimePoint = spaceTimePoints[CurrentIteration];
+            var position = new Position();
+            
 
-            //    velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
-            //    velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
+            if (spaceTimePoints != null)
+            {
+                var spaceTimePoint = spaceTimePoints[CurrentIteration];
 
-            //    positionXAtIterationBox.Text = spaceTimePoint.Position.X.ToString();
-            //    positionYAtIterationBox.Text = spaceTimePoint.Position.Y.ToString();
-            //}
+                position.X = spaceTimePoint.Position.X;
+                position.Y = spaceTimePoint.Position.Y;
+
+                velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
+                velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
+
+                positionXAtIterationBox.Text = position.X.ToString();
+                positionYAtIterationBox.Text = position.Y.ToString();
+            }
+
+            UpdateEllipseElement(position);
+
         }
 
-        //private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
-        //{
-        //    ReadInitialValues();
-        //    CalculateTimeTotal();
-        //    PopulateSpaceTimePointsTable();
-        //    maxDistance = spaceTimePoints[spaceTimePoints.Length - 1].Position.X;
-        //    maxHeight = spaceTimePoints[spaceTimePoints.Length / 2].Position.Y;
-        //    finalTimeBox.Text = finalTime.ToString();
 
-        //    PopulateResultFields(CurrentIteration);
-        //}
-
-        //private void UpdateEllipseElement(Position newPosition)
-        //{
-        //    //ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maxDistance, maxHeight);
-        //    ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maxDistance, maxHeight);
-        //}
-        //private SpaceTimePoint CreateSpaceTimePointAtIteration(int i)
-        //{
-        //    var currentTime = GetTimeAtIteration(i);
-
-        //    var currentX = initialVelocityX * currentTime;
-        //    var currentY = initialVelocityY * currentTime - (G/2)*((float)Math.Pow(currentTime, 2));
-        //    var position = new Position(currentX, currentY);
-
-        //    var currentVelocityY = initialVelocityY - (G * currentTime);
-        //    var velocity = new Velocity(initialVelocityX, currentVelocityY);
-
-        //    return new SpaceTimePoint(position, velocity);
-        //}
-        //private void PopulateResultFields(int iterationNumber)
-        //{
-        //    velocityXAtIterationBox.Text = spaceTimePoints[iterationNumber].Velocity.Vx.ToString();
-        //    velocityYAtIterationBox.Text = spaceTimePoints[iterationNumber].Velocity.Vy.ToString();
-
-        //    positionXAtIterationBox.Text = spaceTimePoints[iterationNumber].Position.X.ToString();
-        //    positionYAtIterationBox.Text = spaceTimePoints[iterationNumber].Position.Y.ToString();
-        //}
-        //private double GetTimeAtIteration(int i)
-        //{
-        //    return finalTime * (i / (float)spaceTimePoints.Length);
-        //}
-
-        //public void SetCurrentIteration(int i)
-        //{
-        //    CurrentIteration = i;
-        //}
+        private void UpdateEllipseElement(Position newPosition)
+        {
+            ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition);
+        }
     }
 }
