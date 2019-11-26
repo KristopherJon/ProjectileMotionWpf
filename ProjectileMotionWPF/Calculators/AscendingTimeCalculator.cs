@@ -22,9 +22,11 @@ namespace ProjectileMotionWPF.Calculators
             while (Y_Velocity >= 0.001d)
             {
                 var dragAtVelocity = DragCalculator.CalculateDragAtVelocity(Y_Velocity, initialValues);
-                var netForce = initialValues.Gravity + dragAtVelocity;
+                var dragInducedAcceleration = dragAtVelocity / initialValues.Mass;
 
-                Y_Velocity -= DeltaVelocityCalculator.CalculateDeltaVelocity(deltaTime, netForce);
+                var netAcceleration = initialValues.Gravity + dragInducedAcceleration;
+
+                Y_Velocity -= DeltaVelocityCalculator.CalculateDeltaVelocity(deltaTime, netAcceleration);
                 Y_Position += DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, Y_Velocity);
 
                 time += deltaTime;

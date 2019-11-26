@@ -2,9 +2,9 @@
 {
     public static class DeltaVelocityCalculator
     {
-        public static double CalculateDeltaVelocity(double deltaTime, double netForce)
+        public static double CalculateDeltaVelocity(double deltaTime, double acceleration)
         {
-            return deltaTime * netForce;
+            return deltaTime * acceleration;
         }
     }
 }

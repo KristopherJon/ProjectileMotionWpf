@@ -30,10 +30,11 @@ namespace ProjectileMotionWPF
         {
             initialValues = new InitialValues
             {
+                Mass = (double)ProjectilesMassBox.Value,
                 Gravity = (double)GravityBox.Value,
                 DragCoefficient = 0.47,
                 CrossSectionArea = Math.Pow((double)ProjectilesRadiusBox.Value, 2) * Math.PI,
-                InitialVelocityX = (double)InitialVelocityVectorValueBox.Value * MathHelper.CosValueOfDegreeAngle((double)InitialVelocityVectorValueBox.Value),
+                InitialVelocityX = (double)InitialVelocityVectorValueBox.Value * MathHelper.CosValueOfDegreeAngle((double)InitialVelocityVectorAngleBox.Value),
                 InitialVelocityY = (double)InitialVelocityVectorValueBox.Value * MathHelper.SinValueOfDegreeAngle((double)InitialVelocityVectorAngleBox.Value),
                 DensityOfTheMedium = (double)DensityOfTheMediumBox.Value,
                 RadiusOfTheProjectile = (double)ProjectilesRadiusBox.Value,
@@ -91,7 +92,7 @@ namespace ProjectileMotionWPF
         {
             var spaceTimePoint = new SpaceTimePoint
             {
-                Position = CalculatePosition(previousSpaceTimePoint.Position),
+                Position = CalculatePosition(previousSpaceTimePoint),
                 Velocity = CalculateVelocity(previousSpaceTimePoint.Velocity)
             };
 
@@ -112,19 +113,16 @@ namespace ProjectileMotionWPF
             return velocity;
         }
 
-
-        public Position CalculatePosition(Position previousPosition)
+        public Position CalculatePosition(SpaceTimePoint previousSpaceTimePoint)
         {
             var position = new Position
             {
-                X = 1d,
-                Y = 1d
+                X = previousSpaceTimePoint.Position.X + DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, previousSpaceTimePoint.Velocity.Vx),
+                Y = previousSpaceTimePoint.Position.Y + DeltaPositionCalculator.GetDeltaPositionAfterDeltaTime(deltaTime, previousSpaceTimePoint.Velocity.Vy)
             };
 
             return position;
         }
-
-
 
         public void CalculateTotalTime()
         {
@@ -155,6 +153,22 @@ namespace ProjectileMotionWPF
             }
         }
 
+        private void iterationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            currentSliderValue.Text = iterationSlider.Value.ToString();
+
+            //if (spaceTimePoints != null)
+            //{
+            //    var spaceTimePoint = spaceTimePoints[CurrentIteration];
+
+            //    velocityXAtIterationBox.Text = spaceTimePoint.Velocity.Vx.ToString();
+            //    velocityYAtIterationBox.Text = spaceTimePoint.Velocity.Vy.ToString();
+
+            //    positionXAtIterationBox.Text = spaceTimePoint.Position.X.ToString();
+            //    positionYAtIterationBox.Text = spaceTimePoint.Position.Y.ToString();
+            //}
+        }
+
         //private void CalculateProjectileTrajectory(object sender, RoutedEventArgs e)
         //{
         //    ReadInitialValues();
@@ -166,7 +180,7 @@ namespace ProjectileMotionWPF
 
         //    PopulateResultFields(CurrentIteration);
         //}
-        
+
         //private void UpdateEllipseElement(Position newPosition)
         //{
         //    //ellipse.Margin = EllipsePositionCalculator.NewElipseElementMarginCalculator(newPosition, maxDistance, maxHeight);
