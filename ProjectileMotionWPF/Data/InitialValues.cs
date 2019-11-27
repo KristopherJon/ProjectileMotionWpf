@@ -12,5 +12,6 @@
         public double RadiusOfTheProjectile      { get; set; }
         public double CrossSectionArea           { get; set; }
         public double Mass                       { get; set; }
+        public double Density                    { get; set; }
     }
 }

@@ -58,10 +58,10 @@
             HorizontalAlignment="Left" VerticalAlignment="Top"
             Margin="604,26,0,0" TextWrapping="Wrap" 
             Text="Radius of the projectile" />
-        <TextBlock x:Name="projectilesMassText"
+        <TextBlock x:Name="projectilesDensityText"
             HorizontalAlignment="Left" VerticalAlignment="Top"
-            Margin="612,64,0,0" TextWrapping="Wrap" 
-            Text="Mass of the projectile" />
+            Margin="600,65,0,0" TextWrapping="Wrap" 
+            Text="Density of the projectile" />
 
         <TextBox x:Name="velocityXAtIterationBox"
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
@@ -116,7 +116,7 @@
                                        Value="0"
                                        Increment="0.1" 
                                        Minimum="0"
-                                       Maximum="10"/>
+                                       Maximum="12"/>
         <wpfTool:DecimalUpDown x:Name="ProjectilesRadiusBox"
                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                Margin="731,26,0,0" ClipValueToMinMax="True"
@@ -124,13 +124,13 @@
                                Increment="0.1" 
                                Minimum="0.1"
                                Maximum="20"/>
-        <wpfTool:DecimalUpDown x:Name="ProjectilesMassBox"
+        <wpfTool:DecimalUpDown x:Name="ProjectilesDensityBox"
                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                Margin="731,62,0,0" ClipValueToMinMax="True"
                                Value="0.1"
                                Increment="0.1" 
-                               Minimum="0.1"
-                               Maximum="20"/>
+                               Minimum="560"
+                               Maximum="7800"/>
 
         <Border x:Name="chartBorder"
                 BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" 

@@ -32,7 +32,6 @@ namespace ProjectileMotionWPF
         {
             initialValues = new InitialValues
             {
-                Mass = (double)ProjectilesMassBox.Value,
                 Gravity = (double)GravityBox.Value,
                 DragCoefficient = 0.47,
                 CrossSectionArea = Math.Pow((double)ProjectilesRadiusBox.Value, 2) * Math.PI,
@@ -43,6 +42,8 @@ namespace ProjectileMotionWPF
                 InitialVelocityVectorValue = (double)InitialVelocityVectorValueBox.Value,
                 InitialVelocityVectorAngle = (double)InitialVelocityVectorAngleBox.Value,
             };
+
+            initialValues.Mass = initialValues.Density * (4 / 3 * Math.PI * Math.Pow(initialValues.RadiusOfTheProjectile, 2));
         }
         private void InitializeSpaceTimePoints()
         {
